@@ -5,19 +5,18 @@ import (
 	"log"
 
 	"github.com/edgedb/edgedb-go"
-	"honnef.co/go/tools/config"
 )
 
 var (
 	client *edgedb.Client
 )
 
-func ConnectDB(cnf config.Config) *edgedb.Client {
+func ConnectDB() *edgedb.Client {
 	ctx := context.Background()
 	opts := edgedb.Options{
-		Database:    cnf.DBName,
-		User:        cnf.DBUser,
-		Concurrency: 4,
+		Database:    "edgedb",
+		User:        "edgeeb",
+		Concurrency: 3,
 	}
 
 	// Create a new client instance
@@ -26,9 +25,9 @@ func ConnectDB(cnf config.Config) *edgedb.Client {
 	if err != nil {
 		log.Fatalf("failed to create edgedb client  %v", err)
 	}
-	defer client.Close()
 
 	log.Println("Connected to EdgeDB")
 
 	return client
 }
+

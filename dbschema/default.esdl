@@ -1,11 +1,5 @@
 module default {
- type Image {
-    required property name -> str{
-      default:="image";
-    };
-    required property format -> str;
-    required property data -> bytes;
-  }
+
 
   type Phone {
     required property cid -> str {
@@ -20,7 +14,6 @@ module default {
   # User and User Types
 
   abstract type User {
-    required property user_type -> str;
     required property first_name -> str{
       constraint max_len_value(25);
     };
@@ -95,9 +88,7 @@ module default {
     # Additional properties specific to applicants
     
     optional property resume -> bytes;
-    optional link image -> Image{
-       on source delete delete target;
-    };
+   optional property image :str;
     multi link scores -> Score{
        on source delete delete target ;
     };
@@ -160,9 +151,7 @@ module default {
     };
     required property company_size -> str;
     required property company_description -> str;
-    required link image -> Image{
-     on source delete delete target if orphan;
-    };
+    required property image ->str;
     required property website -> str;
     required property profile_url_slug -> str{
       default:="PLZ FILL INFO";

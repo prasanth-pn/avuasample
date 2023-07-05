@@ -268,5 +268,9 @@ type Admin extending User{
     };
     
  }
+ type Beta {
+  required property name ->str;
+  
+ }
  
 }

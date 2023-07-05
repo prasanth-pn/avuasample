@@ -5,11 +5,9 @@ go 1.20
 require (
 	github.com/edgedb/edgedb-go v0.14.0
 	github.com/gin-gonic/gin v1.9.1
-	honnef.co/go/tools v0.4.3
 )
 
 require (
-	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/certifi/gocertifi v0.0.0-20210507211836-431795d63e8d // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect

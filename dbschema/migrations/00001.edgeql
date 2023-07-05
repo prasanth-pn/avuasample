@@ -1,4 +1,4 @@
-CREATE MIGRATION m1c6n4sk53b267csj2tccrfbisi3n2sdmxbslzniw4eqpop4gvgsja
+CREATE MIGRATION m1eba6zhew4d64jpxldcslwgcyhmuzb7vvdgi3lskod4vl3q6evgka
     ONTO initial
 {
   CREATE TYPE default::Address {
@@ -13,18 +13,8 @@ CREATE MIGRATION m1c6n4sk53b267csj2tccrfbisi3n2sdmxbslzniw4eqpop4gvgsja
           SET default := 'PLZ FILL INFO';
       };
   };
-  CREATE TYPE default::Image {
-      CREATE REQUIRED PROPERTY data: std::bytes;
-      CREATE REQUIRED PROPERTY format: std::str;
-      CREATE REQUIRED PROPERTY name: std::str {
-          SET default := 'image';
-      };
-  };
   CREATE TYPE default::Company {
       CREATE REQUIRED LINK address: default::Address {
-          ON SOURCE DELETE DELETE TARGET IF ORPHAN;
-      };
-      CREATE REQUIRED LINK image: default::Image {
           ON SOURCE DELETE DELETE TARGET IF ORPHAN;
       };
       CREATE REQUIRED PROPERTY company_description: std::str;
@@ -32,6 +22,7 @@ CREATE MIGRATION m1c6n4sk53b267csj2tccrfbisi3n2sdmxbslzniw4eqpop4gvgsja
       CREATE REQUIRED PROPERTY founded_date: std::str {
           SET default := 'PLZ FILL INFO';
       };
+      CREATE REQUIRED PROPERTY image: std::str;
       CREATE REQUIRED PROPERTY name: std::str {
           CREATE CONSTRAINT std::max_len_value(25);
       };
@@ -93,7 +84,6 @@ CREATE MIGRATION m1c6n4sk53b267csj2tccrfbisi3n2sdmxbslzniw4eqpop4gvgsja
           CREATE CONSTRAINT std::max_len_value(25);
       };
       CREATE REQUIRED PROPERTY password: std::str;
-      CREATE REQUIRED PROPERTY user_type: std::str;
   };
   CREATE TYPE default::Admin EXTENDING default::User {
       CREATE MULTI LINK blogs: default::Blog {
@@ -108,12 +98,10 @@ CREATE MIGRATION m1c6n4sk53b267csj2tccrfbisi3n2sdmxbslzniw4eqpop4gvgsja
       CREATE REQUIRED PROPERTY timestamp: std::datetime;
   };
   CREATE TYPE default::Applicant EXTENDING default::User {
-      CREATE OPTIONAL LINK image: default::Image {
-          ON SOURCE DELETE DELETE TARGET;
-      };
       CREATE MULTI LINK messages: default::Message {
           ON SOURCE DELETE DELETE TARGET IF ORPHAN;
       };
+      CREATE OPTIONAL PROPERTY image: std::str;
       CREATE OPTIONAL PROPERTY resume: std::bytes;
   };
   CREATE TYPE default::Score {
@@ -185,6 +173,9 @@ CREATE MIGRATION m1c6n4sk53b267csj2tccrfbisi3n2sdmxbslzniw4eqpop4gvgsja
           SET default := 'DRAFT';
       };
       CREATE REQUIRED PROPERTY title: std::str;
+  };
+  CREATE TYPE default::Beta {
+      CREATE REQUIRED PROPERTY name: std::str;
   };
   CREATE TYPE default::Employer EXTENDING default::User {
       CREATE REQUIRED LINK company: default::Company {

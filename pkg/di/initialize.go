@@ -2,20 +2,18 @@ package di
 
 import (
 	http "github.com/prasanthpn-pn/avua-erecruitement/pkg/api"
-	"github.com/prasanthpn-pn/avua-erecruitement/pkg/api/handler"
 	"github.com/prasanthpn-pn/avua-erecruitement/pkg/db"
-	repo "github.com/prasanthpn-pn/avua-erecruitement/pkg/repository"
-	"github.com/prasanthpn-pn/avua-erecruitement/pkg/usecase"
+	employerauthentication "github.com/prasanthpn-pn/avua-erecruitement/pkg/employerauthentication"
 )
 
 func InitiallizeEvent() (*http.ServeHTTP, error) {
 
 	DB := db.ConnectDB()
+	employerauthenticationrepository := employerauthentication.NewRepository(DB)
+	employeeAuthService := employerauthentication.NewService(employerauthenticationrepository)
+	employeeAuthHandler := employerauthentication.NewHandler(employeeAuthService)
 
-	g := repo.NewEmpRepo(DB)
-	k := usecase.NewEmployerService(g)
-	h := handler.NewEmployerHandler(k)
-	serv := http.NewServeHttp(h)
+	serverHttp := http.NewServeHttp(*employeeAuthHandler)
 
-	return serv, nil
+	return serverHttp, nil
 }

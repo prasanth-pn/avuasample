@@ -11,11 +11,12 @@ var (
 	client *edgedb.Client
 )
 
+// Connect initializes the EdgeDB connection
 func ConnectDB() *edgedb.Client {
 	ctx := context.Background()
 	opts := edgedb.Options{
 		Database:    "edgedb",
-		User:        "edgeeb",
+		User:        "edgedb",
 		Concurrency: 4,
 	}
 
@@ -23,18 +24,20 @@ func ConnectDB() *edgedb.Client {
 	var err error
 	client, err = edgedb.CreateClient(ctx, opts)
 	if err != nil {
-		log.Fatalf("failed to create edgedb client  %v", err)
+		return client
 	}
-defer client.Close()
+
 	log.Println("Connected to EdgeDB")
-	err=client.Execute(context.Background(),
-`INSERT Beta {
+	err = client.Execute(context.Background(),
+		`INSERT Beta {
 	name:=<str>$0,
-}`,"prasanth")
-
-log.Fatalf("erroor in db %v",err)
-
+}`, "prasanth")
 
 	return client
 }
-
+func Close() {
+	if client != nil {
+		client.Close()
+		log.Println("Disconnected from EdgeDB")
+	}
+}

@@ -2,22 +2,21 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/prasanthpn-pn/avua-erecruitement/pkg/api/handler"
+	employerauth "github.com/prasanthpn-pn/avua-erecruitement/pkg/employerauthentication"
 )
 
 type ServeHTTP struct {
 	engine *gin.Engine
 }
 
-func NewServeHttp(employe *handler.Employe) *ServeHTTP {
+func NewServeHttp(employeeAuthenication employerauth.Handler) *ServeHTTP {
 	engine := gin.New()
-
-	engine.POST("/login", employe.EmployeRegister)
+	employeeAuthenication.Mountroutes(engine)
 
 	return &ServeHTTP{engine}
 
 }
-func (s *ServeHTTP)Start(){
+func (s *ServeHTTP) Start() {
 
 	s.engine.Run(":9090")
 }
